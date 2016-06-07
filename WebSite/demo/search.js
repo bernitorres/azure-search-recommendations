@@ -16,28 +16,30 @@ function execSuggest()
             request.setRequestHeader("api-key", azureSearchQueryApiKey);
             request.setRequestHeader("Content-Type", "application/json");
             request.setRequestHeader("Accept", "application/json; odata.metadata=none");
+            request.setRequestHeader("x-ms-azs-return-searchid", true);
         },
         type: "GET",
-        success: function (data) {
+        success: function (data, textStatus, request) {
 			$( "#mediaContainer" ).html('');
 			for (var item in data.value)
 			{
 				var id = data.value[item].id;
 				var title = data.value[item].title;
 				var imageURL = data.value[item].imdbPictureURL;
-				$( "#mediaContainer" ).append( '<div class="col-md-4" style="text-align:center"><a href="javascript:void(0);" onclick="openMovieDetails(\'' + title + '\',\'' + id + '\');"><img src=' + imageURL + ' height=200><br><div style="height:100px"><b>' + title + '</b></a></div></div>' );
+				var searchId = request.getResponseHeader('x-ms-azs-searchid'));
+				$( "#mediaContainer" ).append( '<div class="col-md-4" style="text-align:center"><a href="javascript:void(0);" onclick="openMovieDetails(\'' + title + '\',\'' + id + '\',\'' + searchId + '\');"><img src=' + imageURL + ' height=200><br><div style="height:100px"><b>' + title + '</b></a></div></div>' );
 			}
 			inSearch= false;
         }
     });
 }
 
-function openMovieDetails(title, id)
+function openMovieDetails(title, id, searchId)
 {
 	// Open the dialog with the recommendations
 	$("#modal-title").html(title);
 	$("#recDiv").html('Loading recommendations...');
-	appInsights.trackEvent("click", {DocId: id});
+	appInsights.trackEvent("click", {DocId: id, SearchId: searchId});
 
 	var recommendatationAPI = "https://api.datamarket.azure.com/data.ashx/amla/recommendations/v2/ItemRecommend?$format=json&modelId='" + azureMLModelId + "'&numberOfResults=5&buildId=" + azureMLBuildId + "&includeMetadata=false&apiVersion='1.0'&itemIds='" + id + "'";
 
