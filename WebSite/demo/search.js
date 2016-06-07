@@ -16,6 +16,7 @@ function execSuggest()
             request.setRequestHeader("api-key", azureSearchQueryApiKey);
             request.setRequestHeader("Content-Type", "application/json");
             request.setRequestHeader("Accept", "application/json; odata.metadata=none");
+            request.setRequestHeader("Access-Control-Expose-Headers", "x-ms-azs-searchid");
             request.setRequestHeader("x-ms-azs-return-searchid", "true");
         },
         type: "GET",
