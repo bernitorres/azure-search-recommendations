@@ -7,6 +7,7 @@ function execSuggest()
 {
 	// Execute a search to lookup viable movies
 	var q = encodeURIComponent($("#q").val());
+	appInsights.trackEvent("Search", {Terms: q});
 	var searchAPI = "https://azs-playground.search.windows.net/indexes/movies/docs?$top=12&$select=id,title,imdbPictureURL&api-version=2015-02-28&search=" + q;
 	inSearch= true;
     $.ajax({
@@ -36,6 +37,7 @@ function openMovieDetails(title, id)
 	// Open the dialog with the recommendations
 	$("#modal-title").html(title);
 	$("#recDiv").html('Loading recommendations...');
+	appInsights.trackEvent("click", {DocId: id});
 
 	var recommendatationAPI = "https://api.datamarket.azure.com/data.ashx/amla/recommendations/v2/ItemRecommend?$format=json&modelId='" + azureMLModelId + "'&numberOfResults=5&buildId=" + azureMLBuildId + "&includeMetadata=false&apiVersion='1.0'&itemIds='" + id + "'";
 
