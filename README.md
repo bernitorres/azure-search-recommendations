@@ -12,7 +12,7 @@ This sample shows how to add recommendations to an [Azure Search](https://azure.
 
 # Give it a Try
 
-Give the [following demo](https://rawgit.com/liamca/azure-search-recommendations/master/WebSite/demo/index.html) a try to see what we will be building by searching for a movie and then click on the movie to see recommendations.
+Give the [following demo](https://rawgit.com/bernitorres/azure-search-recommendations/master/WebSite/demo/index.html) a try to see what we will be building by searching for a movie and then click on the movie to see recommendations.
 
 ## What is a Recommendation?
 
