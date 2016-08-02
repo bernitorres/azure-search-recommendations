@@ -7,7 +7,7 @@ function execSuggest()
 {
 	// Execute a search to lookup viable movies
 	var q = encodeURIComponent($("#q").val());
-	appInsights.trackEvent("Search", {Terms: q});
+	
 	var searchAPI = "https://azs-playground.search.windows.net/indexes/movies/docs?$top=12&$select=id,title,imdbPictureURL&api-version=2015-02-28&search=" + q;
 	inSearch= true;
     $.ajax({
@@ -28,6 +28,7 @@ function execSuggest()
 				var title = data.value[item].title;
 				var imageURL = data.value[item].imdbPictureURL;
 				var searchId = request.getResponseHeader('x-ms-azs-searchid');
+				appInsights.trackEvent("Search", {Terms: q, SearchId: searchId});
 				$( "#mediaContainer" ).append( '<div class="col-md-4" style="text-align:center"><a href="javascript:void(0);" onclick="openMovieDetails(\'' + title + '\',\'' + id + '\',\'' + searchId + '\');"><img src=' + imageURL + ' height=200><br><div style="height:100px"><b>' + title + '</b></a></div></div>' );
 			}
 			inSearch= false;
