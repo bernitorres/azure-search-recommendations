@@ -22,13 +22,13 @@ function execSuggest()
         type: "GET",
         success: function (data, textStatus, request) {
 			$( "#mediaContainer" ).html('');
+			var searchId = request.getResponseHeader('x-ms-azs-searchid');
+			appInsights.trackEvent("Search", {Terms: q, SearchId: searchId});
 			for (var item in data.value)
 			{
 				var id = data.value[item].id;
 				var title = data.value[item].title;
 				var imageURL = data.value[item].imdbPictureURL;
-				var searchId = request.getResponseHeader('x-ms-azs-searchid');
-				appInsights.trackEvent("Search", {Terms: q, SearchId: searchId});
 				$( "#mediaContainer" ).append( '<div class="col-md-4" style="text-align:center"><a href="javascript:void(0);" onclick="openMovieDetails(\'' + title + '\',\'' + id + '\',\'' + searchId + '\');"><img src=' + imageURL + ' height=200><br><div style="height:100px"><b>' + title + '</b></a></div></div>' );
 			}
 			inSearch= false;
